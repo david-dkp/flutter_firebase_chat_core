@@ -64,6 +64,8 @@ class FirebaseChatCore {
       role: creatorRole.toShortString(),
     );
 
+    if (currentUser == null) return Future.error('User does not exist');
+
     final roomUsers = [types.User.fromJson(currentUser)] + users;
 
     final room = await getFirebaseFirestore()
@@ -156,6 +158,8 @@ class FirebaseChatCore {
       fu.uid,
       config.usersCollectionName,
     );
+
+    if (currentUser == null) return Future.error('User does not exist');
 
     final users = [types.User.fromJson(currentUser), otherUser];
 
