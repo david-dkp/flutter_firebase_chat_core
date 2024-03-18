@@ -15,13 +15,17 @@ extension RoomTypeToShortString on types.RoomType {
 }
 
 /// Fetches user from Firebase and returns a promise.
-Future<Map<String, dynamic>> fetchUser(
+Future<Map<String, dynamic>?> fetchUser(
   FirebaseFirestore instance,
   String userId,
   String usersCollectionName, {
   String? role,
 }) async {
   final doc = await instance.collection(usersCollectionName).doc(userId).get();
+
+  if (!doc.exists) {
+    return null;
+  }
 
   final data = doc.data()!;
 
@@ -73,7 +77,7 @@ Future<types.Room> processRoomDocument(
   final userIds = data['userIds'] as List<dynamic>;
   final userRoles = data['userRoles'] as Map<String, dynamic>?;
 
-  final users = await Future.wait(
+  final users = (await Future.wait(
     userIds.map(
       (userId) => fetchUser(
         instance,
@@ -82,7 +86,8 @@ Future<types.Room> processRoomDocument(
         role: userRoles?[userId] as String?,
       ),
     ),
-  );
+  ))
+      .whereType<Map<String, dynamic>>();
 
   if (type == types.RoomType.direct.toShortString()) {
     try {
