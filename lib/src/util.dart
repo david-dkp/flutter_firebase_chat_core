@@ -87,7 +87,8 @@ Future<types.Room> processRoomDocument(
       ),
     ),
   ))
-      .whereType<Map<String, dynamic>>();
+      .whereType<Map<String, dynamic>>()
+      .toList();
 
   if (type == types.RoomType.direct.toShortString()) {
     try {
