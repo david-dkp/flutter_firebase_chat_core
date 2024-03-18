@@ -64,9 +64,10 @@ class FirebaseChatCore {
       role: creatorRole.toShortString(),
     );
 
-    if (currentUser == null) return Future.error('User does not exist');
-
-    final roomUsers = [types.User.fromJson(currentUser)] + users;
+    final roomUsers = [
+          if (currentUser != null) types.User.fromJson(currentUser),
+        ] +
+        users;
 
     final room = await getFirebaseFirestore()
         .collection(config.roomsCollectionName)
@@ -159,9 +160,10 @@ class FirebaseChatCore {
       config.usersCollectionName,
     );
 
-    if (currentUser == null) return Future.error('User does not exist');
-
-    final users = [types.User.fromJson(currentUser), otherUser];
+    final users = [
+      if (currentUser != null) types.User.fromJson(currentUser),
+      otherUser,
+    ];
 
     // Create new room with sorted user ids array.
     final room = await getFirebaseFirestore()
