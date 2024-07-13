@@ -32,11 +32,12 @@ class FirebaseChatCore {
       FirebaseChatCore._privateConstructor();
 
   /// Gets proper [FirebaseFirestore] instance.
-  FirebaseFirestore getFirebaseFirestore() => config.firebaseAppName != null
-      ? FirebaseFirestore.instanceFor(
-          app: Firebase.app(config.firebaseAppName!),
-        )
-      : FirebaseFirestore.instance;
+  FirebaseFirestore getFirebaseFirestore() => FirebaseFirestore.instanceFor(
+        app: config.firebaseAppName != null
+            ? Firebase.app(config.firebaseAppName!)
+            : Firebase.app(),
+        databaseId: config.databaseId,
+      );
 
   /// Sets custom config to change default names for rooms
   /// and users collections. Also see [FirebaseChatCoreConfig].
