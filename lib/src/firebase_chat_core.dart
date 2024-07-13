@@ -21,6 +21,7 @@ class FirebaseChatCore {
     null,
     'rooms',
     'users',
+    null,
   );
 
   /// Current logged in user in Firebase. Does not update automatically.
